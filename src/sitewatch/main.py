@@ -1,13 +1,11 @@
-import typer
+from typer import Typer, echo
 
-
-
-app = typer.Typer()
+app = Typer()
 
 @app.command()
-def greet(name, times=1):
-    for _ in range(times):
-        typer.echo(f"Hello {name}!")
+def greet(name: str, times=1):
+    for i in range(times):
+        echo(f"Hello {name}!")
 
 
 
