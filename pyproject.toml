@@ -6,7 +6,7 @@ readme = "README.md"
 authors = [
     { name = "bacrehclb", email = "j9009308@gmail.com" }
 ]
-requires-python = ">=3.15"
+requires-python = ">=3.12"
 dependencies = []
 
 [project.scripts]
@@ -18,5 +18,7 @@ build-backend = "uv_build"
 
 [dependency-groups]
 dev = [
+    "rich>=15.0.0",
     "ruff>=0.17.4",
+    "typer>=0.28.0",
 ]
