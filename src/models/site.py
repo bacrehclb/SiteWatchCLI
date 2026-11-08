@@ -1,24 +1,21 @@
-import datetime
+from datetime import datetime
+from uuid import UUID, uuid4
 
-from pydantic import HttpUrl, TypeAdapter, ValidationError
+from pydantic import BaseModel, Field, HttpUrl, field_validator
 
-"""Site Model"""
-class Site:
-    site_count = 0
+"""a Site model, representing a site 
+added by a user for monitoring."""
+class Site(BaseModel):
+    id: UUID = Field(default_factory=uuid4)
+    url: HttpUrl
+    name: str
+    create_date: datetime = Field(default_factory=datetime.now)
+
+    @field_validator('id')
+    def check_id(cls, value: UUID) -> UUID:
+        if value == UUID("00000000-0000-0000-0000-000000000000"):
+            raise ValueError("ID cannot be null")
+        if value.version != 4:
+            raise ValueError("ID must be UUID version 4")
+        return value
     
-    def __init__(self, url: str, name: str):
-        """URL check"""
-        ta = TypeAdapter(HttpUrl)
-        try:
-            validated_url = ta.validate_python(url)
-        except ValidationError:
-            raise ValueError(f"Невалидный URL: {url}")
-            
-        Site.site_count += 1
-        self.id = Site.site_count
-        self.url = validated_url
-        self.name = name
-        self.date = datetime.UTC
-        
-
-        
